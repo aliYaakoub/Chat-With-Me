@@ -29,7 +29,6 @@ const Register = ({setRoute, notifyInfo, notifySuccess, notifyError}) => {
                 try{
                     setIsLoading(true);
                     const results = await axios.post(`${process.env.REACT_APP_API_URL}/users/register`, data);
-                    console.log(results);
                     if(results.data.message === 'success'){
                         notifyInfo('registered')
                         setIsLoading(false);

@@ -16,7 +16,6 @@ const Login = ({setIsLoggedIn, setRoute, notifySuccess, notifyError, setCurrentU
             try{
                 setIsLoading(true);
                 const results = await axios.get(`${process.env.REACT_APP_API_URL}/users/login?username=${username}&password=${password}`);
-                // console.log(results);
                 if(results.data.message === 'success'){
                     notifySuccess('logged in')
                     setCurrentUsername(results.data.account.username)
