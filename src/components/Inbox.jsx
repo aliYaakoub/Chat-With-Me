@@ -22,12 +22,13 @@ function useKey(key,cb){
     },[key])
 }
 
-const Inbox = ({currentUsername, toUser, setRoute, notifyError, setLastMessage}) => {
+const Inbox = ({currentUsername, toUser, setRoute, notifyError}) => {
 
     const [message, setMessage] = useState('');
     const [allMessages, setAllMessages] = useState([]);
     const [isCancelled, setIsCancelled] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
+    const [sending, setSending] = useState(false);
 
     useEffect(() =>{
         if(!isCancelled){
@@ -36,7 +37,6 @@ const Inbox = ({currentUsername, toUser, setRoute, notifyError, setLastMessage})
                 setAllMessages(results.data.data.sort((a,b)=>{
                         return new Date(a.createdAt) - new Date(b.createdAt);
                 }));
-                // setLastMessage(allMessages.slice(-1)[0].content)
                 setIsLoading(false)
             }
             fetchMessages();
@@ -53,9 +53,11 @@ const Inbox = ({currentUsername, toUser, setRoute, notifyError, setLastMessage})
     useKey('Enter', sendMessage)
 
     async function sendMessage() {
-        if(!isCancelled){
+        if(!isCancelled && !sending){
+            setSending(true);
             if(message.length > 1000){
                 notifyError('message too large')
+                setSending(false);
             }
             else{
                 try{
@@ -67,11 +69,13 @@ const Inbox = ({currentUsername, toUser, setRoute, notifyError, setLastMessage})
                     const results = await axios.post(`${process.env.REACT_APP_API_URL}/messages`, data);
                     if(results.data.message === 'success'){
                         setMessage('');
-                    }
+                    setSending(false);
+                }
                 }
                 catch(err) {
                     console.error(err);
                     notifyError('server error');
+                    setSending(false);
                 }
             }
         }
@@ -79,11 +83,16 @@ const Inbox = ({currentUsername, toUser, setRoute, notifyError, setLastMessage})
 
     return (
         <div className="inbox flex flex-col">
-            <p className="absolute left-5 top-3 cursor-pointer z-50" onClick={()=>setRoute('contacts')} >&#10094; Back</p>
-            <div className=" bg-gray-300 w-full h-16 flex items-center px-5 text-2xl rounded-b-2xl">
-                <h1>{toUser}</h1>
+            <div className=" bg-gray-300 w-full h-16 flex flex-row justify-between items-center px-5 text-2xl rounded-b-2xl">
+                <div className='flex flex-row items-center '>
+                    <div className="w-16 mr-5 rounded-full bg-purple-400">
+                        <img src={`https://avatars.dicebear.com/api/croodles-neutral/${toUser}.svg`} alt="" />
+                    </div>
+                    <h1>{toUser}</h1>
+                </div>
+                <p className="sm:absolute  left-5 top-3 cursor-pointer z-50" onClick={()=>setRoute('contacts')} >&#10094; Back</p>
             </div>
-            <div className="messages w-full h-full overflow-y-auto">
+            <div className="messages w-full h-full overflow-y-auto py-5">
                 {isLoading ? 
                     <h1 className="text-white text-center text-2xl my-10">loading ...</h1> 
                     : 
@@ -92,7 +101,7 @@ const Inbox = ({currentUsername, toUser, setRoute, notifyError, setLastMessage})
                     ))
                 }
             </div>  
-            <div className='justify-self-end p-2'>
+            <div className='justify-self-end h-20 p-2 sm:mb-2 mb-5'>
                 <div className="w-full h-full flex bg-gray-300 rounded-2xl ">
                     <input 
                         type="text" 

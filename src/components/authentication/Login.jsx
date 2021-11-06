@@ -7,10 +7,12 @@ const Login = ({setIsLoggedIn, setRoute, notifySuccess, notifyError, setCurrentU
     const [password, setPassword] = useState('');
     const [isCancelled, setIsCancelled] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLogging, setIsLogging] = useState(false);
 
     async function onSubmit(e){
         e.preventDefault();
-        if(!isCancelled){
+        if(!isCancelled && !isLogging){
+            setIsLogging(true);
             try{
                 setIsLoading(true);
                 const results = await axios.get(`${process.env.REACT_APP_API_URL}/users/login?username=${username}&password=${password}`);
@@ -19,17 +21,20 @@ const Login = ({setIsLoggedIn, setRoute, notifySuccess, notifyError, setCurrentU
                     notifySuccess('logged in')
                     setCurrentUsername(results.data.account.username)
                     setIsLoading(false);
+                    setIsLogging(false)
                     setIsLoggedIn(true);
                 }
                 else{
                     notifyError(results.data.message);
                     setPassword('');
+                    setIsLogging(false)
                     setIsLoading(false);
                 }
             }
             catch(err){
                 console.error(err);
                 setIsLoading(false);
+                setIsLogging(false)
                 notifyError('server error')
             }
         }

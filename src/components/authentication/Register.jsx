@@ -8,10 +8,11 @@ const Register = ({setRoute, notifyInfo, notifySuccess, notifyError}) => {
     const [password, setPassword] = useState('');
     const [isCancelled, setIsCancelled] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [isRegistering, setIsRegistering] = useState(false);
 
     async function onSubmit(e){
         e.preventDefault();
-        if(!isCancelled){
+        if(!isCancelled && !isRegistering){
             if(name.length < 5 ){ notifyError('name must be at least 5 characters') } 
             else if(name.length > 50 ){ notifyError('name too large') } 
             else if(username.length < 5 ){ notifyError('username must be at least 5 characters') } 
@@ -19,6 +20,7 @@ const Register = ({setRoute, notifyInfo, notifySuccess, notifyError}) => {
             else if(password.length < 5 ){ notifyError('password must be at least 5 characters') } 
             else if(password.length > 50 ){ notifyError('password too large') } 
             else {
+                setIsRegistering(true);
                 let data = {
                     name: name,
                     username: username,
@@ -31,11 +33,13 @@ const Register = ({setRoute, notifyInfo, notifySuccess, notifyError}) => {
                     if(results.data.message === 'success'){
                         notifyInfo('registered')
                         setIsLoading(false);
+                        setIsRegistering(false);
                         setRoute('login');
                     }
                     else{
                         notifyError(results.data.message);
                         setPassword('')
+                        setIsRegistering(false);
                         setIsLoading(false);
                     }
                 }
@@ -43,6 +47,7 @@ const Register = ({setRoute, notifyInfo, notifySuccess, notifyError}) => {
                     console.error(err);
                     notifyError('error while registering');
                     setIsLoading(false);
+                    setIsRegistering(false);
                 }
             }
         }
@@ -66,7 +71,7 @@ const Register = ({setRoute, notifyInfo, notifySuccess, notifyError}) => {
                         id='name' 
                         name="name" 
                         value={name}
-                        onChange={(e)=>setName(e.target.value.trim())}
+                        onChange={(e)=>setName(e.target.value)}
                         className="input text-xl p-2"
                         placeholder='Enter your name here ... '
                     />

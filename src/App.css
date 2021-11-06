@@ -34,13 +34,15 @@ html{
   width: 100%;
 }
 .contacts{
-  width: 95%;
+  box-shadow: 0 0 10px black;
+  width: 100%;
   height: 100%;
   max-width: 500px;
   background:rgba(0, 0, 0, 0.6);
 }
 .inbox{
-  width: 95%;
+  box-shadow: 0 0 10px black;
+  width: 100%;
   height: 100%;
   max-width: 600px;
   background:rgba(0, 0, 0, 0.6);

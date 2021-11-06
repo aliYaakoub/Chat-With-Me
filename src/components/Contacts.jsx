@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ContactCard from './ContactCard';
 
-const Contacts = ({currentUsername, setRoute, setToUser, lastMessage}) => {
+const Contacts = ({currentUsername, setRoute, setToUser}) => {
 
     const [data, setData] = useState([]);
     const [isCancelled, setIsCancelled] = useState(true);
@@ -43,7 +43,6 @@ const Contacts = ({currentUsername, setRoute, setToUser, lastMessage}) => {
                                 key={item._id}
                                 setRoute={setRoute}
                                 setToUser={setToUser}
-                                lastMessage={lastMessage}
                             />
                         )
                     }
