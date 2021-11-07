@@ -19,7 +19,7 @@ const ContactCard = ({data, setRoute, setToUser}) => {
     },[isCancelled])
 
     return (
-        <div onClick={()=>onCardClick()} className="m-2 p-2 flex flex-row rounded border cursor-pointer hover:bg-white h-20 items-center hover:text-black transition-colors">
+        <div onClick={()=>onCardClick()} className="m-2 p-2 flex flex-row rounded-xl border cursor-pointer hover:bg-white h-20 items-center hover:text-black transition-colors">
             <div className="w-16 mr-5 rounded-full bg-purple-400">
                 <img src={`https://avatars.dicebear.com/api/croodles-neutral/${data.username}.svg`} alt="" />
             </div>

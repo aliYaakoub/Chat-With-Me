@@ -53,7 +53,7 @@ const Inbox = ({currentUsername, toUser, setRoute, notifyError}) => {
     useKey('Enter', sendMessage)
 
     async function sendMessage() {
-        if(!isCancelled && !sending){
+        if(!isCancelled){
             setSending(true);
             if(message.length > 1000){
                 notifyError('message too large')
@@ -69,13 +69,13 @@ const Inbox = ({currentUsername, toUser, setRoute, notifyError}) => {
                     const results = await axios.post(`${process.env.REACT_APP_API_URL}/messages`, data);
                     if(results.data.message === 'success'){
                         setMessage('');
+                    }
                     setSending(false);
-                }
                 }
                 catch(err) {
+                    setSending(false);
                     console.error(err);
                     notifyError('server error');
-                    setSending(false);
                 }
             }
         }
@@ -92,7 +92,7 @@ const Inbox = ({currentUsername, toUser, setRoute, notifyError}) => {
                 </div>
                 <p className="sm:absolute  left-5 top-3 cursor-pointer z-50" onClick={()=>setRoute('contacts')} >&#10094; Back</p>
             </div>
-            <div className="messages w-full h-full overflow-y-auto py-5">
+            <div className="messages w-full h-full overflow-y-auto overflow-x-hidden py-5">
                 {isLoading ? 
                     <h1 className="text-white text-center text-2xl my-10">loading ...</h1> 
                     : 
@@ -110,7 +110,7 @@ const Inbox = ({currentUsername, toUser, setRoute, notifyError}) => {
                         placeholder='Message ...'
                         onChange={(e)=>setMessage(e.target.value)}
                     />
-                    <button className='py-2 px-5 border rounded-r-2xl' onClick={()=>sendMessage()} >Send</button>
+                    <button disabled={sending} className='py-2 px-5 border rounded-r-2xl' onClick={()=>sendMessage()} >{sending ? 'loading' : 'Send'}</button>
                 </div>
             </div>
         </div>
