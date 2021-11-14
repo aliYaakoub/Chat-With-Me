@@ -18,7 +18,7 @@ const Main = ({currentUsername, notifySuccess, notifyError, notifyInfo, setIsLog
     useEffect(() => window.addEventListener('beforeunload', async (e) => {
         e.preventDefault()
         await axios.post(`${process.env.REACT_APP_API_URL}/users/logout?username=${currentUsername}`)
-     }), [currentUsername])
+     }))
 
     return (
         <div className="w-full h-screen flex items-center relative  justify-center">
