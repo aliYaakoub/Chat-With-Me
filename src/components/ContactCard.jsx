@@ -23,6 +23,7 @@ const ContactCard = ({data, setRoute, setToUser}) => {
             <div className="w-16 mr-5 rounded-full bg-purple-400">
                 <img src={`https://avatars.dicebear.com/api/croodles-neutral/${data.username}.svg`} alt="" />
             </div>
+            <span className={data.isOnline ? `rounded-full mr-5 w-5 h-5 bg-green-500`:`rounded-full mr-5 w-5 h-5 bg-red-600`}></span>
             <h1 className="text-xl">{data.username}</h1>
         </div>
     )

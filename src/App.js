@@ -20,7 +20,7 @@ function App() {
       {isLoggedIn ? 
         <Main 
           currentUsername={currentUsername}
-          setIsLoggedIn={isLoggedIn} 
+          setIsLoggedIn={setIsLoggedIn} 
           notifySuccess={notifySuccess}
           notifyError={notifyError}
           notifyInfo={notifyInfo}

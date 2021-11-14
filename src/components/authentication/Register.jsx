@@ -101,7 +101,7 @@ const Register = ({setRoute, notifyInfo, notifySuccess, notifyError}) => {
                         placeholder='Create a password .'
                     />
                 </div>
-                <button className="w-10/12 border rounded-lg h-12 text-xl hover:bg-white hover:text-purple-400 transition-colors">Login</button>
+                <button className="w-10/12 border rounded-lg h-12 text-xl hover:bg-white hover:text-purple-400 transition-colors">Register</button>
             </form>
         </div>
     )
